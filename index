@@ -1,0 +1,18 @@
+<button id="connectBtn">Connect to BLE Device</button>
+<script>
+document.getElementById('connectBtn').addEventListener('click', async () => {
+  if (!navigator.bluetooth) {
+    alert("Web Bluetooth not available in this browser.");
+    return;
+  }
+  try {
+    const device = await navigator.bluetooth.requestDevice({
+      filters: [{ services: ['heart_rate'] }]
+    });
+    alert("Found device: " + device.name);
+  } catch (err) {
+    alert("BLE request failed: " + err);
+    console.error(err);
+  }
+});
+</script>
