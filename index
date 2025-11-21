@@ -1,18 +1,34 @@
-<button id="connectBtn">Connect to BLE Device</button>
-<script>
-document.getElementById('connectBtn').addEventListener('click', async () => {
-  if (!navigator.bluetooth) {
-    alert("Web Bluetooth not available in this browser.");
-    return;
-  }
-  try {
-    const device = await navigator.bluetooth.requestDevice({
-      filters: [{ services: ['heart_rate'] }]
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>BLE Test</title>
+</head>
+<body>
+  <h1>BLE Test Page</h1>
+  <button id="connectBtn">Connect to BLE Device</button>
+  <p id="status"></p>
+
+  <script>
+    const status = document.getElementById('status');
+    document.getElementById('connectBtn').addEventListener('click', async () => {
+      if (!navigator.bluetooth) {
+        status.textContent = "Web Bluetooth not available in this browser.";
+        alert(status.textContent);
+        return;
+      }
+      try {
+        const device = await navigator.bluetooth.requestDevice({
+          filters: [{ services: ['heart_rate'] }]
+        });
+        status.textContent = "Found device: " + device.name;
+        alert(status.textContent);
+      } catch (err) {
+        status.textContent = "BLE request failed: " + err;
+        console.error(err);
+        alert(status.textContent);
+      }
     });
-    alert("Found device: " + device.name);
-  } catch (err) {
-    alert("BLE request failed: " + err);
-    console.error(err);
-  }
-});
-</script>
+  </script>
+</body>
+</html>
